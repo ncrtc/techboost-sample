@@ -1,0 +1,21 @@
+name: First Workflow
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+    
+
+jobs:
+
+  job1:
+    name: job1
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Step1
+        run: echo "Step 1 Complete"
+
+      - name: Step2
+        run: echo "Step 2 Complete"
