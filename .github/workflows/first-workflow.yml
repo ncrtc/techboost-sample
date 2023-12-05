@@ -5,8 +5,9 @@ on:
     branches:
       - main
   workflow_dispatch:
+  issues:
+    opened
     
-
 jobs:
 
   job1:
@@ -22,6 +23,7 @@ jobs:
         
   job2:
     name: Cowsays
+    needs: [job1]
     runs-on: ubuntu-latest
     steps:
     - name: Ship it
