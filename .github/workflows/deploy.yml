@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-and-deploy:
+  build-and-deploy-dev:
     runs-on: ubuntu-latest
     steps:
 
@@ -26,4 +26,29 @@ jobs:
         parameters: environment=dev
 
       # output containerName variable from template
+    - run: echo ${{ steps.deploy.outputs.containerName }}
+
+  build-and-deploy-test:
+    runs-on: ubuntu-latest
+    needs: [ build-and-deploy-dev ]
+    steps:
+
+        # Checkout code
+    - uses: actions/checkout@main
+
+        # Log into Azure
+    - uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+        # Deploy ARM template
+    - name: Run ARM deploy
+      uses: azure/arm-deploy@v1
+      with:
+        subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+        resourceGroupName: ${{ secrets.AZURE_RG }}
+        template: ./InfrastructureAsCode/main.bicep
+        parameters: environment=test
+
+        # output containerName variable from template
     - run: echo ${{ steps.deploy.outputs.containerName }}
