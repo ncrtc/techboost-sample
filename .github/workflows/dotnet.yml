@@ -64,4 +64,4 @@ jobs:
         docker push $REGISTRYNAME/$REPOSITORYNAME:latest
 
   deploy-to-webapp:
-    uses: .github/workflows/deploy.yml
+    uses: ncrtc/techboost-sample/.github/workflows/deploy.yml@feat/docker
