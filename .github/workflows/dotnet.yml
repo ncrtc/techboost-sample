@@ -4,7 +4,7 @@
 name: .NET
 
 env:
-  REGISTRYNAME: nvg46g5woyax4mpnpreg
+  REGISTRYNAME: nvg46g5woyax4mpnpreg.azurecr.io
   REPOSITORYNAME: techboost/dotnetcoreapp
   DOCKERFOLDERPATH: Application/src/RazorPagesTestSample
   TAG: github.run_number
@@ -47,13 +47,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - name: Docker login
-      shell: bash
-      env:
-        ACR_USERNAME: ${{ secrets.ACR_USERNAME }}
-        ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}        
-      run: |
-        docker login $REGISTRYNAME -u $ACR_USERNAME -p $ACR_PASSWORD
+    - name: Login to ACR
+      uses: docker/login-action@v3
+      with:
+        registry: ${{ env.REGISTRYNAME }}
+        username:  ${{ secrets.ACR_USERNAME }}
+        password: ${{ secrets.ACR_PASSWORD }}       
     - name: Docker build
       shell: bash
       run: |
