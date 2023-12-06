@@ -127,4 +127,146 @@ namespace RazorPagesTestSample.Tests.UnitTests
         }
         #endregion
     }
+
+    public class MessageTest
+    {
+        [Fact]
+        public void IdProperty_SetsAndGetsCorrectly()
+        {
+            // Arrange
+            var message = new Message();
+            var id = 1;
+
+            // Act
+            message.Id = id;
+
+            // Assert
+            Assert.Equal(id, message.Id);
+        }
+
+        [Fact]
+        public void TextProperty_SetsAndGetsCorrectly()
+        {
+            // Arrange
+            var message = new Message();
+            var text = "Test message";
+
+            // Act
+            message.Text = text;
+
+            // Assert
+            Assert.Equal(text, message.Text);
+        }
+
+        [Fact]
+        public void TextProperty_RequiredAttribute_ThrowsException_WhenNull()
+        {
+            // Arrange
+            var message = new Message();
+
+            // Act
+            var validationContext = new ValidationContext(message);
+            var result = Validator.TryValidateObject(message, validationContext, null, true);
+
+            // Assert
+            Assert.False(result, "Expected validation to fail when Text is null");
+        }
+
+        [Fact]
+        public void TextProperty_StringLengthAttribute_ThrowsException_WhenTooLong()
+        {
+            // Arrange
+            var message = new Message();
+            var longText = new string('a', 251);
+
+            // Act
+            message.Text = longText;
+            var validationContext = new ValidationContext(message);
+            var result = Validator.TryValidateObject(message, validationContext, null, true);
+
+            // Assert
+            Assert.False(result, "Expected validation to fail when Text is too long");
+        }
+
+        [Fact]
+        public void TextProperty_StringLengthAttribute_199()
+        {
+            // Arrange
+            var message = new Message();
+            var longText = new string('a', 199);
+
+            // Act
+            message.Text = longText;
+            var validationContext = new ValidationContext(message);
+            var result = Validator.TryValidateObject(message, validationContext, null, true);
+
+            // Assert
+            Assert.True(result, "Expected validation to pass when Text is 199 characters long");
+
+        }
+        
+        [Fact]
+        public void TextProperty_StringLengthAttribute_200()
+        {
+            // Arrange
+            var message = new Message();
+            var longText = new string('a', 200);
+
+            // Act
+            message.Text = longText;
+            var validationContext = new ValidationContext(message);
+            var result = Validator.TryValidateObject(message, validationContext, null, true);
+
+            // Assert
+            Assert.True(result, "Expected validation to pass when Text is 200 characters long");
+        }
+        
+        [Fact]
+        public void TextProperty_StringLengthAttribute_201()
+        {
+            // Arrange
+            var message = new Message();
+            var longText = new string('a', 201);
+
+            // Act
+            message.Text = longText;
+            var validationContext = new ValidationContext(message);
+            var result = Validator.TryValidateObject(message, validationContext, null, true);
+
+            // Assert
+            Assert.True(result, "Expected validation to pass when Text is 201 characters long");
+        }
+
+        [Fact]
+        public void TextProperty_StringLengthAttribute_249()
+        {
+            // Arrange
+            var message = new Message();
+            var longText = new string('a', 249);
+
+            // Act
+            message.Text = longText;
+            var validationContext = new ValidationContext(message);
+            var result = Validator.TryValidateObject(message, validationContext, null, true);
+
+            // Assert
+            Assert.True(result, "Expected validation to pass when Text is 249 characters long");
+        }
+
+        [Fact]
+        public void TextProperty_StringLengthAttribute_250()
+        {
+            // Arrange
+            var message = new Message();
+            var longText = new string('a', 250);
+
+            // Act
+            message.Text = longText;
+            var validationContext = new ValidationContext(message);
+            var result = Validator.TryValidateObject(message, validationContext, null, true);
+
+            // Assert
+            Assert.True(result, "Expected validation to pass when Text is 250 characters long");
+        }
+    }
 }
