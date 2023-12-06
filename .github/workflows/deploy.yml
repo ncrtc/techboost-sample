@@ -22,7 +22,7 @@ jobs:
       with:
         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
         resourceGroupName: ${{ secrets.AZURE_RG }}
-        template: ./INfrastructureAsCode/main.bicep
+        template: ./InfrastructureAsCode/main.bicep
         parameters: environment=dev
 
       # output containerName variable from template
