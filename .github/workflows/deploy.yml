@@ -3,6 +3,10 @@ name: Deploy IAC
 on:
   workflow_dispatch:
 
+env: 
+    REGISTRYNAME: nvg46g5woyax4mpnpreg.azurecr.io
+    REPOSITORYNAME: techboost/dotnetcoreapp
+
 jobs:
   build-and-deploy-dev:
     runs-on: ubuntu-latest
@@ -18,12 +22,19 @@ jobs:
 
       # Deploy ARM template
     - name: Run ARM deploy
+      id: deploy
       uses: azure/arm-deploy@v1
       with:
         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
         resourceGroupName: ${{ secrets.AZURE_RG }}
         template: ./InfrastructureAsCode/main.bicep
         parameters: environment=dev
+
+    - name: 'Deploy to Azure Web App for Container'
+      uses: azure/webapps-deploy@v2
+      with: 
+        app-name: ${{ steps.deploy.outputs.application_name }}
+        images: ${{ env.REGISTRYNAME }}/${{ env.REPOSITORYNAME }}:latest
 
       # output containerName variable from template
     - run: echo ${{ steps.deploy.outputs.containerName }}
@@ -73,7 +84,7 @@ jobs:
         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
         resourceGroupName: ${{ secrets.AZURE_RG }}
         template: ./InfrastructureAsCode/main.bicep
-        parameters: environment=test
+        parameters: environment=prod
 
         # output containerName variable from template
     - run: echo ${{ steps.deploy.outputs.containerName }}
