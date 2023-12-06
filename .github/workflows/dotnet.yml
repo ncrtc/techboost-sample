@@ -65,7 +65,4 @@ jobs:
 
   deploy-to-webapp:
       uses: ncrtc/techboost-sample/.github/workflows/deploy.yml@feat/docker
-      secrets:
-        AZURE_SUBSCRIPTION: ${{ secrets.AZURE_SUBSCRIPTION }}
-        AZURE_RG: ${{ secrets.AZURE_RG }}
-        AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+      secrets: inherit # pass all secrets
