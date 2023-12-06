@@ -8,6 +8,7 @@ on:
     branches: [ "main", "feat/docker" ]
     paths:
     - 'Application/**/*'
+    - '.github/workflows/dotnet.yml'
   pull_request:
     branches: [ "main" ]
     paths:
