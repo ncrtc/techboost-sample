@@ -64,5 +64,6 @@ jobs:
         docker push $REGISTRYNAME/$REPOSITORYNAME:latest
 
   deploy-to-webapp:
-      uses: ncrtc/techboost-sample/.github/workflows/deploy.yml@feat/docker
-      secrets: inherit # pass all secrets
+    needs: [ containerize ]
+    uses: ncrtc/techboost-sample/.github/workflows/deploy.yml@feat/docker
+    secrets: inherit # pass all secrets

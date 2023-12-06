@@ -43,6 +43,7 @@ jobs:
   build-and-deploy-test:
     runs-on: ubuntu-latest
     needs: [ build-and-deploy-dev ]
+    environment: test
     steps:
 
         # Checkout code
@@ -55,6 +56,7 @@ jobs:
 
         # Deploy ARM template
     - name: Run ARM deploy
+      id: deploytest
       uses: azure/arm-deploy@v1
       with:
         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
@@ -62,12 +64,18 @@ jobs:
         template: ./InfrastructureAsCode/main.bicep
         parameters: environment=test
 
+    - name: 'Deploy to Azure Web App for Container'
+      uses: azure/webapps-deploy@v2
+      with: 
+        app-name: ${{ steps.deploytest.outputs.application_name }}
+        images: ${{ env.REGISTRYNAME }}/${{ env.REPOSITORYNAME }}:latest
         # output containerName variable from template
-    - run: echo ${{ steps.deploy.outputs.containerName }}
+    - run: echo ${{ steps.deploytest.outputs.containerName }}
 
   build-and-deploy-prod:
     runs-on: ubuntu-latest
     needs: [ build-and-deploy-dev, build-and-deploy-test ]
+    environment: prod
     steps:
 
         # Checkout code
@@ -80,6 +88,7 @@ jobs:
 
         # Deploy ARM template
     - name: Run ARM deploy
+      id: deployprod
       uses: azure/arm-deploy@v1
       with:
         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
@@ -87,5 +96,10 @@ jobs:
         template: ./InfrastructureAsCode/main.bicep
         parameters: environment=prod
 
+    - name: 'Deploy to Azure Web App for Container'
+      uses: azure/webapps-deploy@v2
+      with: 
+        app-name: ${{ steps.deployprod.outputs.application_name }}
+        images: ${{ env.REGISTRYNAME }}/${{ env.REPOSITORYNAME }}:latest
         # output containerName variable from template
-    - run: echo ${{ steps.deploy.outputs.containerName }}
+    - run: echo ${{ steps.deployprod.outputs.containerName }}
