@@ -56,7 +56,7 @@ jobs:
     - name: Docker build
       shell: bash
       run: |
-        docker build -t $REGISTRYNAME/$REPOSITORYNAME:$TAG --build-arg build_version=$TAG $DOCKERFOLDERPATH
+        docker build -t $REGISTRYNAME/$REPOSITORYNAME:$TAG -t $REGISTRYNAME/REPOSITORYNAME:latest --build-arg build_version=$TAG $DOCKERFOLDERPATH
     - name: Docker push
       shell: bash
       run: docker push $REGISTRYNAME/$REPOSITORYNAME:$TAG
