@@ -2,6 +2,7 @@ name: Deploy IAC
 
 on:
   workflow_dispatch:
+  workflow_call:
 
 env: 
     REGISTRYNAME: nvg46g5woyax4mpnpreg.azurecr.io

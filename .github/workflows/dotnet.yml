@@ -59,4 +59,9 @@ jobs:
         docker build -t $REGISTRYNAME/$REPOSITORYNAME:$TAG -t $REGISTRYNAME/$REPOSITORYNAME:latest --build-arg build_version=$TAG $DOCKERFOLDERPATH
     - name: Docker push
       shell: bash
-      run: docker push $REGISTRYNAME/$REPOSITORYNAME:$TAG
+      run: |
+        docker push $REGISTRYNAME/$REPOSITORYNAME:$TAG
+        docker push $REGISTRYNAME/$REPOSITORYNAME:latest
+
+  deploy-to-webapp:
+    uses: ncrtc/techboost-sample/.github/workflows/deploy.yml
