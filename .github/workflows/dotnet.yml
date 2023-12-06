@@ -7,7 +7,7 @@ env:
   REGISTRYNAME: nvg46g5woyax4mpnpreg.azurecr.io
   REPOSITORYNAME: techboost/dotnetcoreapp
   DOCKERFOLDERPATH: Application/src/RazorPagesTestSample
-  TAG: github.run_number
+  TAG: ${{ github.run_number }}
 
 on:
   push:
